@@ -9,13 +9,13 @@ from langserve import add_routes
 
 # 1. Chain definition
 
-class CommaSeparatedListOutputParser(BaseOutputParser[List[str]]):
-    """Parse the output of an LLM call to a comma-separated list."""
-
+class OutputParser(BaseOutputParser[List[str]]):
+    """Parse the output of an LLM call to a string."""
 
     def parse(self, text: str) -> List[str]:
         """Parse the output of an LLM call."""
-        return text.strip().split(", ")
+        return "Selected cat from the list [\"tiger\", \"lion\" , \"leopard\" , \"snow leopard\" , \"jaguar\"] is: "+ text
+
 
 template = """You are a expert of big cats who ONLY selects one item from this comma separated list:
 LIST:["tiger", "lion" , "leopard" , "snow leopard" , "jaguar"]
@@ -27,7 +27,7 @@ chat_prompt = ChatPromptTemplate.from_messages([
     ("system", template),
     ("human", human_template),
 ])
-category_chain = chat_prompt | ChatOpenAI(openai_api_key="") | CommaSeparatedListOutputParser()
+category_chain = chat_prompt | ChatOpenAI() | OutputParser()
 
 # 2. App definition
 app = FastAPI(
