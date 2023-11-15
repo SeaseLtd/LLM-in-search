@@ -17,16 +17,17 @@ class CommaSeparatedListOutputParser(BaseOutputParser[List[str]]):
         """Parse the output of an LLM call."""
         return text.strip().split(", ")
 
-template = """You are a helpful assistant who generates comma separated lists.
-A user will pass in a category, and you should generate 5 objects in that category in a comma separated list.
-ONLY return a comma separated list, and nothing more."""
+template = """You are a expert of big cats who ONLY selects one item from this comma separated list:
+LIST:["tiger", "lion" , "leopard" , "snow leopard" , "jaguar"]
+A user will pass you a query expressed in natural language, and you must select one cat from LIST.
+ONLY return a string from LIST, no additional text."""
 human_template = "{text}"
 
 chat_prompt = ChatPromptTemplate.from_messages([
     ("system", template),
     ("human", human_template),
 ])
-category_chain = chat_prompt | ChatOpenAI(openai_api_key="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") | CommaSeparatedListOutputParser()
+category_chain = chat_prompt | ChatOpenAI(openai_api_key="") | CommaSeparatedListOutputParser()
 
 # 2. App definition
 app = FastAPI(

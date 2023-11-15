@@ -1,3 +1,4 @@
 Langchain
 openai
 langserve[all]
+uvicorn
