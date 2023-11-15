@@ -12,5 +12,7 @@ conda activate LLM-Search
 
 pip install -r requirements.txt
 
+python serve.py
+
 ```
 N.B. these work for a unix-based Operative Systems like MacOs
